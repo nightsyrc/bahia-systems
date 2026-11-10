@@ -324,3 +324,9 @@ main{max-width:74rem;margin:0 auto;padding:0 1.1rem}
 .bd-form{max-width:40rem}
 @media (min-width:62rem){.bd-card{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start}.bd-cab,.bd-acc,.bd-card>.err{grid-column:1/-1}}
 @media (max-width:600px){.bd-ficha dl{grid-template-columns:minmax(0,1fr)}.bd-ficha dt{margin-top:.4rem;font-size:.82rem}.bd-card{padding:.9rem}}
+
+/* Equipo de creación */
+.eq-roster{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.6rem}
+.eq-roster li{display:grid;gap:.1rem;padding:.6rem .8rem;border-left:3px solid var(--bahia);background:var(--sal)}
+.eq-roster small{color:var(--marea-2)}
+.eq-md{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem;padding:.8rem;margin-top:.5rem;background:var(--sal);border-radius:.5rem;max-height:28rem;overflow:auto}

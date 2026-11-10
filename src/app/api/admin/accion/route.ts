@@ -2,6 +2,8 @@ import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { esAdmin } from "@/lib/auth";
+import { analista, arquitecto, explorador, vendedor } from "@/lib/equipo";
+import { ESTADOS as ESTADOS_IDEA } from "@/config/equipo";
 import { enviarCola, enviarUno, log, prospector, redactorVuelta, respondedor } from "@/lib/agentes";
 
 export const dynamic = "force-dynamic";
@@ -62,6 +64,21 @@ export async function POST(req: Request) {
         await sql`INSERT INTO mensajes (prospecto_id, tipo, asunto, cuerpo, generado_por) VALUES (${p.rows[0].id as number}, 'frio1', ${asunto}, ${cuerpo}, 'tu')`;
         await log("tu", "prospecto_nuevo", empresa);
         return NextResponse.json({ ok: true });
+      }
+      case "idea_estado": {
+        const estado = s(b.estado, 20);
+        if (!(ESTADOS_IDEA as readonly string[]).includes(estado) || !Number.isInteger(id)) return NextResponse.json({ error: "Dato inválido." }, { status: 400 });
+        await sql`UPDATE ideas SET estado = ${estado}, actualizado_at = NOW() WHERE id = ${id}`;
+        await log("tu", "idea_estado", `idea ${id} → ${estado}`);
+        return NextResponse.json({ ok: true });
+      }
+      case "equipo": {
+        const que = s(b.que, 20);
+        if (que === "explorador") return NextResponse.json({ ok: true, n: await explorador() });
+        if (!Number.isInteger(id)) return NextResponse.json({ error: "Falta la idea." }, { status: 400 });
+        const ok = que === "analista" ? await analista(id) : que === "arquitecto" ? await arquitecto(id) : que === "vendedor" ? await vendedor(id) : null;
+        if (ok === null) return NextResponse.json({ error: "Agente desconocido." }, { status: 400 });
+        return ok ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "El agente no pudo completar el trabajo. Revisa ANTHROPIC_API_KEY." }, { status: 502 });
       }
       case "mensaje_rechazar":
         await sql`UPDATE mensajes SET estado = 'rechazado' WHERE id = ${id} AND estado IN ('borrador', 'aprobado')`;

@@ -34,6 +34,11 @@ export function ensureSchema(): Promise<void> {
       generado_por TEXT NOT NULL DEFAULT 'redactor', aprobado_at TIMESTAMPTZ, enviado_at TIMESTAMPTZ, error TEXT)`;
     await sql`CREATE TABLE IF NOT EXISTS agentes_log (
       id SERIAL PRIMARY KEY, ts TIMESTAMPTZ NOT NULL DEFAULT NOW(), agente TEXT NOT NULL, accion TEXT NOT NULL, detalle TEXT, ok BOOLEAN NOT NULL DEFAULT TRUE)`;
+    await sql`CREATE TABLE IF NOT EXISTS ideas (
+      id SERIAL PRIMARY KEY, creado_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), actualizado_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      titulo TEXT NOT NULL, problema TEXT NOT NULL, publico TEXT, zona TEXT, fuente_url TEXT,
+      estado TEXT NOT NULL DEFAULT 'propuesta', puntaje INT, analisis TEXT, spec TEXT, kit_venta TEXT, precio_mensual INT, notas TEXT)`;
+    await sql`CREATE UNIQUE INDEX IF NOT EXISTS ideas_titulo_uq ON ideas (lower(titulo))`;
   })().catch((e) => { listo = null; throw e; });
   return listo;
 }
