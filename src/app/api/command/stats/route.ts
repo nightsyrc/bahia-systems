@@ -24,6 +24,7 @@ export async function GET(req: Request) {
       COUNT(*) FILTER (WHERE baja)::int AS bajas
     FROM leads`).rows[0];
   const porInteres = (await sql`SELECT interes, COUNT(*)::int AS n FROM leads GROUP BY interes ORDER BY n DESC`).rows;
-  const ultimos = (await sql`SELECT creado_at, nombre, empresa, email, interes, estado, seg_paso FROM leads ORDER BY creado_at DESC LIMIT 10`).rows;
-  return NextResponse.json({ ...c, porInteres, ultimos }, { headers: { "Cache-Control": "no-store" } });
+  const porOrigen = (await sql`SELECT COALESCE(origen, 'directo') AS origen, COUNT(*)::int AS n FROM leads WHERE creado_at > NOW() - INTERVAL '30 days' GROUP BY 1 ORDER BY n DESC`).rows;
+  const ultimos = (await sql`SELECT creado_at, nombre, empresa, email, interes, estado, seg_paso, origen FROM leads ORDER BY creado_at DESC LIMIT 10`).rows;
+  return NextResponse.json({ ...c, porInteres, porOrigen, ultimos }, { headers: { "Cache-Control": "no-store" } });
 }

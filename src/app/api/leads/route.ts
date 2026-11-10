@@ -21,6 +21,7 @@ export async function POST(req: Request) {
   if (b.acepta !== true) return NextResponse.json({ error: "Acepta el aviso de privacidad para continuar." }, { status: 400 });
 
   const interes = INTERESES.includes(s(b.interes, 20)) ? s(b.interes, 20) : "demo";
+  const origen = s(b.origen, 30).toLowerCase().replace(/[^a-z0-9_-]/g, "") || "directo";
   const empresa = s(b.empresa, 160), telefono = s(b.telefono, 40), mensaje = s(b.mensaje, 2000);
   const sel = interes === "medida" && b.seleccion && typeof b.seleccion === "object" ? (b.seleccion as Record<string, unknown>) : null;
   const seleccion = sel ? { tipo: s(sel.tipo, 20), extras: Array.isArray(sel.extras) ? (sel.extras as unknown[]).filter((x): x is string => typeof x === "string").slice(0, 10) : [], urgencia: s(sel.urgencia, 20) } : null;
@@ -34,8 +35,8 @@ export async function POST(req: Request) {
     await ensureSchema();
     const reciente = await sql`SELECT COUNT(*)::int AS n FROM leads WHERE ip_hash = ${ipHash} AND creado_at > NOW() - INTERVAL '1 hour'`;
     if ((reciente.rows[0].n as number) >= 5) return NextResponse.json({ error: "Demasiados envíos seguidos. Intenta en una hora." }, { status: 429 });
-    await sql`INSERT INTO leads (nombre, empresa, email, telefono, interes, mensaje, detalle, estimado, token, ip_hash)
-              VALUES (${nombre}, ${empresa || null}, ${email}, ${telefono || null}, ${interes}, ${mensaje || null}, ${seleccion ? JSON.stringify(seleccion) : null}::jsonb, ${est?.texto ?? null}, ${token}, ${ipHash})`;
+    await sql`INSERT INTO leads (nombre, empresa, email, telefono, interes, mensaje, detalle, estimado, token, ip_hash, origen)
+              VALUES (${nombre}, ${empresa || null}, ${email}, ${telefono || null}, ${interes}, ${mensaje || null}, ${seleccion ? JSON.stringify(seleccion) : null}::jsonb, ${est?.texto ?? null}, ${token}, ${ipHash}, ${origen})`;
   } catch {
     return NextResponse.json({ error: "No pudimos guardar tu solicitud. Escríbenos a " + MARCA.correo + "." }, { status: 500 });
   }

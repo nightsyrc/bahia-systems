@@ -21,6 +21,7 @@ export function ensureSchema(): Promise<void> {
       estado TEXT NOT NULL DEFAULT 'nuevo', seg_paso INT NOT NULL DEFAULT 0, seg_ultimo TIMESTAMPTZ,
       ip_hash TEXT)`;
     await sql`CREATE INDEX IF NOT EXISTS leads_email_idx ON leads (lower(email))`;
+    await sql`ALTER TABLE leads ADD COLUMN IF NOT EXISTS origen TEXT`; // Faro: canal de origen
   })().catch((e) => { listo = null; throw e; });
   return listo;
 }
