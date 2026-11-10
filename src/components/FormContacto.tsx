@@ -1,7 +1,7 @@
 "use client";
 
-/** Faro: de dónde llegó la visita (?src= o utm_source en la URL, o el sitio que la mandó). */
-function origenFaro(): string {
+/** Caravana: de dónde llegó la visita (?src= o utm_source en la URL, o el sitio que la mandó). */
+function origenCaravana(): string {
   const q = new URLSearchParams(window.location.search);
   const directo = q.get("src") ?? q.get("utm_source");
   if (directo) return directo;
@@ -24,7 +24,7 @@ export default function FormContacto({ interes = "demo", seleccion, boton = "Ped
     setEstado("enviando"); setMsg("");
     const r = await fetch("/api/leads", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre: f.get("nombre"), empresa: f.get("empresa"), email: f.get("email"), telefono: f.get("telefono"), mensaje: f.get("mensaje"), sitio: f.get("sitio"), acepta: f.get("acepta") === "on", origen: origenFaro(), interes: (f.get("interes") as string) || interes, seleccion }),
+      body: JSON.stringify({ nombre: f.get("nombre"), empresa: f.get("empresa"), email: f.get("email"), telefono: f.get("telefono"), mensaje: f.get("mensaje"), sitio: f.get("sitio"), acepta: f.get("acepta") === "on", origen: origenCaravana(), interes: (f.get("interes") as string) || interes, seleccion }),
     }).catch(() => null);
     const j = (await r?.json().catch(() => ({}))) as { error?: string; estimado?: string | null };
     if (!r?.ok) { setEstado("idle"); return setMsg(j?.error || "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo."); }
