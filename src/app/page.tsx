@@ -3,9 +3,13 @@ import Cabecera from "@/components/Cabecera";
 import Pie from "@/components/Pie";
 import CartaNautica from "@/components/CartaNautica";
 import MockAtalaya from "@/components/MockAtalaya";
+import MockReporte from "@/components/MockReporte";
+import BarraMovil from "@/components/BarraMovil";
+import { IcPuerta, IcPaquete, IcRelevo, IcReporte, IcCheck, IcFlecha, IcCodigo, IcRayo, IcEnlace, IcGlobo } from "@/components/Iconos";
 import FormContacto from "@/components/FormContacto";
 import { PLANES, mxn } from "@/config/marca";
 
+const ICONOS = [<IcPuerta key="a" />, <IcPaquete key="b" />, <IcRelevo key="c" />, <IcReporte key="d" />];
 const RESUELVE: [string, string][] = [
   ["Accesos y visitas", "Cada entrada y salida queda registrada con quién, a qué unidad y a qué hora. Las visitas anunciadas llevan firma digital."],
   ["Paquetes con constancia", "Se avisa al residente y la entrega queda con firma de quien recibe. Se acabó el «yo creo que ya se lo dieron»."],
@@ -31,46 +35,75 @@ export default function Inicio() {
       <Cabecera />
       <main>
         <section className="hero">
-          <div className="hero-txt">
-            <h1>La caseta de tu condominio, sin cuaderno ni mensajes sueltos.</h1>
-            <p className="lead">Atalaya registra accesos, paquetes y turnos, y entrega al administrador un reporte claro al terminar cada turno.</p>
-            <div className="acciones">
-              <Link href="#contacto" className="btn primario">Pedir una demo</Link>
-              <Link href="#precios" className="btn">Ver precios</Link>
+          <div className="hero-fondo" aria-hidden="true"><CartaNautica /></div>
+          <div className="hero-in">
+            <div className="hero-txt">
+              <p className="pildora"><i /> Caseta digital · Hecho en Puerto Vallarta</p>
+              <h1>La caseta de tu condominio, <em>sin cuaderno</em> ni mensajes sueltos.</h1>
+              <p className="lead">Atalaya registra accesos, paquetes y turnos, y entrega al administrador un reporte claro al terminar cada turno.</p>
+              <div className="acciones">
+                <Link href="#contacto" className="btn primario grande">Pedir una demo <IcFlecha /></Link>
+                <Link href="#precios" className="btn fantasma grande">Ver precios</Link>
+              </div>
+              <ul className="confianza">
+                <li><IcCheck /> Sin costo de alta</li>
+                <li><IcCheck /> Cancela cuando quieras</li>
+                <li><IcCheck /> Probado en una caseta real</li>
+              </ul>
             </div>
-            <p className="nota">Hecho en Puerto Vallarta, probado en una caseta real.</p>
+            <div className="hero-vis"><MockAtalaya /></div>
           </div>
-          <CartaNautica />
+        </section>
+
+        <section className="franja" aria-label="Qué incluye">
+          <p>Desde el celular o la computadora de la caseta</p>
+          <ul><li>Accesos</li><li>Paquetes</li><li>Turnos</li><li>Llaves</li><li>Proveedores</li><li>Reportes PDF</li></ul>
         </section>
 
         <section id="atalaya" className="bloque">
-          <h2>Lo que cambia en la caseta</h2>
-          <dl className="filas">
-            {RESUELVE.map(([t, d]) => (<div key={t}><dt>{t}</dt><dd>{d}</dd></div>))}
-          </dl>
+          <p className="eyebrow">Lo que cambia en la caseta</p>
+          <h2>Menos papel. Más control. Cero «yo creo que sí».</h2>
+          <div className="bento">
+            {RESUELVE.map(([t, d], i) => (
+              <article key={t} className={`bento-c b${i + 1}`}>
+                <span className="ico">{ICONOS[i]}</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
-        <section className="bloque mock-bloque">
-          <div>
-            <h2>Se ve como lo usa tu equipo</h2>
-            <p className="lead">Lo más nuevo primero, avisos pendientes a la vista y un toque para ver el detalle. Nada de menús escondidos.</p>
+        <section id="reporte" className="bloque duo">
+          <div className="duo-txt">
+            <p className="eyebrow">El reporte de turno</p>
+            <h2>El administrador sabe cómo quedó la caseta, sin preguntar.</h2>
+            <p className="lead">Al cerrar cada turno llega un correo claro con lo que pasó y un PDF con las constancias. Si algo necesita su atención, Atalaya se lo marca.</p>
+            <ul className="lista-ok">
+              <li><IcCheck /> Resumen en lenguaje sencillo, no una tabla de datos.</li>
+              <li><IcCheck /> Firmas y fotos de cada entrega en el PDF.</li>
+              <li><IcCheck /> Aprobación del supervisor antes de enviar, si lo prefieres.</li>
+            </ul>
           </div>
-          <MockAtalaya />
+          <MockReporte />
         </section>
 
         <section className="bloque">
-          <h2>Cómo empezamos</h2>
+          <p className="eyebrow">Cómo empezamos</p>
+          <h2>De la demo a tu primer turno, sin complicarte.</h2>
           <ol className="pasos">
             {PASOS.map(([t, d], i) => (<li key={t}><span className="paso-n">{i + 1}</span><div><b>{t}</b><p>{d}</p></div></li>))}
           </ol>
         </section>
 
         <section id="precios" className="bloque">
-          <h2>Precios de Atalaya</h2>
+          <p className="eyebrow">Precios</p>
+          <h2>Un plan para cada caseta.</h2>
           <p className="lead">Por mes, en pesos mexicanos, más IVA. Sin costo de alta.</p>
           <div className="libro">
             {PLANES.map((p) => (
               <article key={p.id} className={p.destacado ? "plan destacado" : "plan"}>
+                {p.destacado ? <span className="plan-tag">Recomendado</span> : null}
                 <h3>{p.nombre}</h3>
                 <p className="precio">{mxn(p.precio)}<small> / mes</small></p>
                 <p className="para">{p.para}</p>
@@ -79,19 +112,29 @@ export default function Inicio() {
               </article>
             ))}
           </div>
-          <p className="nota">¿Necesitas algo distinto? <Link href="/a-la-medida">Cotiza una solución a la medida</Link>.</p>
+          <p className="nota centro">¿Necesitas algo distinto? <Link href="/a-la-medida">Cotiza una solución a la medida</Link>.</p>
         </section>
 
-        <section className="bloque medida">
-          <div>
-            <h2>¿Algo que Atalaya no hace?</h2>
-            <p className="lead">Diseñamos y desarrollamos aplicaciones, automatizaciones, integraciones y sitios web para tu operación. Armas tu alcance, ves un rango de precio al instante y recibes la cotización final por escrito.</p>
+        <section className="medida">
+          <div className="medida-in">
+            <div>
+              <p className="eyebrow claro">A la medida</p>
+              <h2>¿Algo que Atalaya no hace?</h2>
+              <p className="lead">Diseñamos y desarrollamos aplicaciones, automatizaciones, integraciones y sitios web para tu operación. Armas tu alcance, ves un rango de precio al instante y recibes la cotización final por escrito.</p>
+              <Link href="/a-la-medida" className="btn primario grande">Cotizar a la medida <IcFlecha /></Link>
+            </div>
+            <ul className="medida-chips">
+              <li><IcCodigo /> Aplicaciones web y móviles</li>
+              <li><IcRayo /> Automatizaciones y reportes</li>
+              <li><IcEnlace /> Integración entre sistemas</li>
+              <li><IcGlobo /> Sitios web</li>
+            </ul>
           </div>
-          <Link href="/a-la-medida" className="btn primario">Cotizar a la medida</Link>
         </section>
 
         <section className="bloque">
-          <h2>Preguntas frecuentes</h2>
+          <p className="eyebrow">Preguntas frecuentes</p>
+          <h2>Lo que nos preguntan antes de empezar.</h2>
           <div className="faq">
             {FAQ.map(([q, a]) => (<details key={q}><summary>{q}</summary><p>{a}</p></details>))}
           </div>
@@ -99,13 +142,20 @@ export default function Inicio() {
 
         <section id="contacto" className="bloque contacto">
           <div>
-            <h2>Pide tu demo</h2>
-            <p className="lead">Cuéntanos de tu condominio y te escribimos en un día hábil para agendar una demo de 20 minutos.</p>
+            <p className="eyebrow">Pide tu demo</p>
+            <h2>Cuéntanos de tu condominio.</h2>
+            <p className="lead">Te escribimos en un día hábil para agendar una demo de 20 minutos, con datos de ejemplo y sin compromiso.</p>
+            <ul className="lista-ok">
+              <li><IcCheck /> Respuesta en un día hábil.</li>
+              <li><IcCheck /> Sin costo de alta ni contrato forzoso.</li>
+              <li><IcCheck /> Tu información es tuya y la puedes exportar.</li>
+            </ul>
           </div>
-          <FormContacto />
+          <div className="contacto-card"><FormContacto /></div>
         </section>
       </main>
       <Pie />
+      <BarraMovil />
     </>
   );
 }

@@ -1,0 +1,13 @@
+const p = { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
+export const IcPuerta = () => <svg {...p}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="M10 17l5-5-5-5M15 12H3" /></svg>;
+export const IcPaquete = () => <svg {...p}><path d="M21 8l-9-5-9 5v8l9 5 9-5z" /><path d="M3 8l9 5 9-5M12 13v8" /></svg>;
+export const IcRelevo = () => <svg {...p}><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4M8 14l2 2 4-4" /></svg>;
+export const IcReporte = () => <svg {...p}><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" /><path d="M14 3v6h6M8 13h8M8 17h5" /></svg>;
+export const IcCheck = () => <svg {...p} strokeWidth={2.4}><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>;
+export const IcFlecha = () => <svg {...p} strokeWidth={2.2}><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+export const IcCelular = () => <svg {...p}><rect x="7" y="2" width="10" height="20" rx="2.5" /><path d="M11 18h2" /></svg>;
+export const IcEscudo = () => <svg {...p}><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" /><path d="M9 12l2 2 4-4" /></svg>;
+export const IcCodigo = () => <svg {...p}><path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14" /></svg>;
+export const IcRayo = () => <svg {...p}><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>;
+export const IcEnlace = () => <svg {...p}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>;
+export const IcGlobo = () => <svg {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" /></svg>;

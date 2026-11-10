@@ -8,7 +8,7 @@ export default function Medida() {
   return (
     <>
       <Cabecera />
-      <main className="bloque pagina">
+      <main className="pagina bloque">
         <h1>Soluciones a la medida</h1>
         <p className="lead">Elige lo que necesitas y ve un rango de precio al instante. Enviando el formulario recibes una cotización final por escrito, sin costo.</p>
         <Cotizador />
