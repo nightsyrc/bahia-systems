@@ -1,0 +1,9 @@
+name: seguimiento
+on:
+  schedule: [{ cron: "0 16 * * *" }]   # diario, 10:00 hora de Puerto Vallarta
+  workflow_dispatch: {}
+jobs:
+  llamar:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -fsS -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "${{ secrets.SITE_URL }}/api/cron/seguimiento"
