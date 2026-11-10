@@ -23,3 +23,9 @@ export function plantilla(titulo: string, parrafos: string[], boton?: { texto: s
   return `<!doctype html><html lang="es"><body style="margin:0;background:#F3F8F8;font-family:Arial,Helvetica,sans-serif;color:#0B3954"><div style="max-width:560px;margin:0 auto;padding:28px 20px"><p style="font-weight:800;font-size:18px;margin:0 0 22px">${MARCA.nombre}</p><h1 style="font-size:22px;margin:0 0 16px;line-height:1.25">${esc(titulo)}</h1>${cuerpo}${b}${pie}</div></body></html>`;
 }
 export { esc };
+
+/** Correo en frío: texto sencillo, identificación del remitente, motivo del contacto y baja visible. */
+export function plantillaFrio(cuerpo: string, baja: string): string {
+  const parrafos = cuerpo.split(/\n{2,}/).map((p) => `<p style="margin:0 0 14px;line-height:1.6">${esc(p).replace(/\n/g, "<br>")}</p>`).join("");
+  return `<!doctype html><html lang="es"><body style="margin:0;font-family:Arial,Helvetica,sans-serif;color:#0B3954"><div style="max-width:560px;padding:20px">${parrafos}<p style="font-size:12px;color:#5a7683;margin:26px 0 0;border-top:1px solid #dfe9eb;padding-top:12px">${MARCA.nombre} · ${MARCA.ciudad}. Te escribimos porque tu empresa publica este correo como contacto comercial. Si no quieres recibir más mensajes, <a href="${baja}" style="color:#5a7683">date de baja aquí</a>. <a href="${MARCA.url}/privacidad" style="color:#5a7683">Aviso de privacidad</a>.</p></div></body></html>`;
+}

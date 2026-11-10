@@ -7,7 +7,7 @@ export default async function Baja({ searchParams }: { searchParams: Promise<{ t
   const t = ((await searchParams).t ?? "").replace(/[^a-f0-9]/g, "").slice(0, 40);
   let hecho = false;
   if (t.length >= 16) {
-    try { await ensureSchema(); const r = await sql`UPDATE leads SET baja = TRUE WHERE token = ${t} RETURNING id`; hecho = r.rows.length > 0; } catch { /* se muestra el mensaje de error */ }
+    try { await ensureSchema(); const r = await sql`UPDATE leads SET baja = TRUE WHERE token = ${t} RETURNING id`; const q = await sql`UPDATE prospectos SET baja = TRUE, estado = 'baja', estado_at = NOW() WHERE token = ${t} RETURNING id`; hecho = r.rows.length > 0 || q.rows.length > 0; } catch { /* se muestra el mensaje de error */ }
   }
   return (
     <main className="legal">
